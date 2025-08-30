@@ -146,6 +146,7 @@ def banner():
     print("     Welcome to IP Header scanner")
     print("_____________________________________")
     print("Scanner IP Headers Python")
+    print("GitHub: https://github.com/clirimfurriku/SIPHpy")
     print("_____________________________________\n")
 
 
@@ -164,14 +165,13 @@ def manual_scan():
         ip_end = input('Please Enter last IP of the network: ').split('.')
         ip = Network(*ip_start)
         ip.set_end(*ip_end)
-
     run_scan(ip)
 
 
 # =========================
-# Auto Cloudflare Scan
+# Auto: Single Cloudflare CIDR
 # =========================
-def auto_scan():
+def auto_scan_single():
     print("Cloudflare CIDRs:")
     for idx, cidr in enumerate(CLOUDFLARE_CIDR, 1):
         print(f"[{idx}] {cidr}")
@@ -181,11 +181,22 @@ def auto_scan():
     except (IndexError, ValueError):
         print("Invalid choice.")
         return
-
     base_ip, subnet = cidr.split('/')
     ip = Network(*base_ip.split('.'))
     ip.set_subnet(int(subnet))
     run_scan(ip)
+
+
+# =========================
+# Auto: All Cloudflare CIDRs
+# =========================
+def auto_scan_all():
+    for cidr in CLOUDFLARE_CIDR:
+        print(f"\n=== Scanning {cidr} ===")
+        base_ip, subnet = cidr.split('/')
+        ip = Network(*base_ip.split('.'))
+        ip.set_subnet(int(subnet))
+        run_scan(ip)
 
 
 # =========================
@@ -206,7 +217,7 @@ def run_scan(ip):
     took = time() - start
     print(f'It took {took:.2f}s to scan IPs from {ip.start_ip} to {ip.end_ip}')
 
-    with open('results.txt', 'w') as file:
+    with open('results.txt', 'a') as file:
         for i in responses:
             file.write(str(i) + '\n')
     print(f'Results saved as results.txt at {os.getcwd()}')
@@ -218,12 +229,15 @@ def run_scan(ip):
 if __name__ == "__main__":
     banner()
     print("[1] Manual Scan (Custom IP/Subnet)")
-    print("[2] Auto Scan (Cloudflare CIDRs)")
+    print("[2] Auto Scan (Choose One Cloudflare CIDR)")
+    print("[3] Auto Scan (All Cloudflare CIDRs)")
     mode = input("Choose option: ").strip()
 
     if mode == "1":
         manual_scan()
     elif mode == "2":
-        auto_scan()
+        auto_scan_single()
+    elif mode == "3":
+        auto_scan_all()
     else:
         print("Invalid selection!")
