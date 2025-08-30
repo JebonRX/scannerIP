@@ -8,11 +8,11 @@ pip install ping3
 echo _____________________________________
 echo installing commands
 echo ______________________________________
-wget https://raw.githubusercontent.com/clirimfurriku/SIPHpy/master/siphpy
+wget https://raw.githubusercontent.com/JebonRX/scannerIP/main/siphpy
 
 cp /data/data/com.termux/files/home/siphpy /data/data/com.termux/files/usr/bin/siphpy
 
-wget https://raw.githubusercontent.com/clirimfurriku/payloader/master/ip.py
+wget https://raw.githubusercontent.com/JebonRX/scannerIP/main/ip.py
 
 cp /data/data/com.termux/files/home/ip.py /data/data/com.termux/files/usr/bin/ip.py
 
